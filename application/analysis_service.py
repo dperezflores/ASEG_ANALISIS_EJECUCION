@@ -1,19 +1,11 @@
 from __future__ import annotations
 
 import hashlib
-from dataclasses import dataclass
 
+from application.analyzer import analizar
 from application.session import append_history, is_processed, mark_processed
-from core.analyzers import analizar
 from domain.categories import CATEGORIAS
 from providers.base import AIProvider
-
-
-@dataclass(slots=True)
-class AnalysisBatchResult:
-    exitos: int = 0
-    errores: int = 0
-    omitidos: int = 0
 
 
 class AnalysisService:
@@ -42,9 +34,11 @@ class AnalysisService:
             return None, True
 
         result = analizar(self.provider, categoria, file)
+
         if result.estado == "OK":
             for record in result.datos:
                 record["Archivo Origen"] = file.name
             append_history(categoria, result.datos)
             mark_processed(key)
+
         return result, False
