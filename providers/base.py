@@ -4,7 +4,7 @@ from typing import Protocol, Type
 
 from pydantic import BaseModel
 
-from core.schemas import ResultadoExtraccion
+from domain.schemas import ResultadoExtraccion
 
 
 class AIProvider(Protocol):
