@@ -16,11 +16,30 @@
     transform: translateY(-50%);
 }
 
-[data-testid="collapsedControl"] svg {
-    color: white !important;
+/* Botón para volver a abrir la barra lateral.
+   Se cubren los selectores usados por distintas versiones de Streamlit. */
+[data-testid="collapsedControl"],
+[data-testid="stExpandSidebarButton"],
+[data-testid="stHeader"] button[kind="header"] {
+    color: #FFF !important;
+}
+
+[data-testid="collapsedControl"] svg,
+[data-testid="stExpandSidebarButton"] svg,
+[data-testid="stHeader"] button[kind="header"] svg {
+    color: #FFF !important;
     fill: #FFF !important;
+    stroke: #FFF !important;
     width: 24px !important;
     height: 24px !important;
+}
+
+[data-testid="collapsedControl"] svg *,
+[data-testid="stExpandSidebarButton"] svg *,
+[data-testid="stHeader"] button[kind="header"] svg * {
+    color: #FFF !important;
+    fill: #FFF !important;
+    stroke: #FFF !important;
 }
 
 [data-testid="stSidebarCollapseButton"] svg {
@@ -77,9 +96,10 @@
     padding: 10px !important;
 }
 
+/* Hover azul claro solicitado para las carpetas/configuración del sidebar. */
 [data-testid="stSidebar"] [data-testid="stExpander"] summary:hover {
-    background: #FFBAA3 !important;
-    color: #362D32 !important;
+    background: #E8F2FF !important;
+    color: #00304F !important;
 }
 
 [data-testid="stAlert"] {
