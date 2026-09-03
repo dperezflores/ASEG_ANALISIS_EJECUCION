@@ -4,8 +4,8 @@ import streamlit as st
 
 from application.session import get_history
 from domain.categories import CATEGORIAS, CategoriaDocumento
+from presentation.table_component import render_report_table
 from reports import excel as report_builder
-from ui.components import renderizar_tabla_html
 
 
 def build_reports() -> dict[str, dict]:
@@ -19,15 +19,22 @@ def build_reports() -> dict[str, dict]:
         if categoria == CategoriaDocumento.ESTIMACIONES:
             df, xls = report_builder.reporte_estimaciones(data)
             reports[categoria] = {"df": df, "xls": xls}
+
         elif categoria == CategoriaDocumento.FACTURAS:
             df, xls = report_builder.reporte_facturas(data)
             reports[categoria] = {"df": df, "xls": xls}
+
         elif categoria == CategoriaDocumento.COMPROBANTES:
             df, xls = report_builder.reporte_comprobantes(data)
             reports[categoria] = {"df": df, "xls": xls}
+
         elif categoria == CategoriaDocumento.POLIZAS:
             dev, pag, xls = report_builder.reporte_polizas(data)
-            reports[categoria] = {"df_dev": dev, "df_pag": pag, "xls": xls}
+            reports[categoria] = {
+                "df_dev": dev,
+                "df_pag": pag,
+                "xls": xls,
+            }
 
     return reports
 
@@ -51,7 +58,13 @@ def render_results() -> None:
             )
 
             if name == CategoriaDocumento.POLIZAS:
-                renderizar_tabla_html(report["df_dev"], "Pólizas Devengo")
-                renderizar_tabla_html(report["df_pag"], "Pólizas Pago")
+                render_report_table(
+                    report["df_dev"],
+                    "Pólizas Devengo",
+                )
+                render_report_table(
+                    report["df_pag"],
+                    "Pólizas Pago",
+                )
             else:
-                renderizar_tabla_html(report["df"], name)
+                render_report_table(report["df"], name)
