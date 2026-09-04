@@ -57,6 +57,17 @@
     box-shadow: none !important;
 }
 
+/* Control para cerrar el sidebar: sólo en hover el icono cambia a blanco.
+   No afecta al control de reapertura cuando el panel está cerrado. */
+[data-testid="stSidebarCollapseButton"]:hover svg,
+[data-testid="stSidebarCollapseButton"]:hover svg *,
+[data-testid="stSidebarCollapseButton"] button:hover svg,
+[data-testid="stSidebarCollapseButton"] button:hover svg * {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+    stroke: #FFFFFF !important;
+}
+
 /* El header técnico conserva altura suficiente para los controles nativos. */
 [data-testid="stHeader"] {
     height: 3rem !important;
