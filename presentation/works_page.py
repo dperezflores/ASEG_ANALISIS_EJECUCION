@@ -6,7 +6,6 @@ from application.services.work_service import WorkService
 from domain.users import User
 from domain.works import NewWork, Work
 from presentation.components import render_page_hero, render_section_heading
-from presentation.messages import error, info, success, warning
 
 
 def _work_label(work: Work) -> str:
@@ -15,7 +14,7 @@ def _work_label(work: Work) -> str:
 
 def _render_work_card(work: Work, user: User, service: WorkService) -> None:
     with st.container(border=True):
-        st.markdown(f'<div class="work-card__title">{work.name}</div>', unsafe_allow_html=True)
+        st.markdown(f"**{work.name}**")
 
         col_open, col_archive = st.columns([1, 1])
         if col_open.button(
@@ -56,10 +55,10 @@ def _render_create_form(user: User, service: WorkService) -> None:
                     user.id,
                     NewWork(name=identifier),
                 )
-                success("Obra registrada correctamente.")
+                st.success("Obra registrada correctamente.")
                 st.rerun()
             except ValueError as exc:
-                error(str(exc))
+                st.error(str(exc))
 
 
 def _render_archived(user: User, service: WorkService) -> None:
@@ -80,7 +79,7 @@ def _render_archived(user: User, service: WorkService) -> None:
                 st.session_state[f"confirm_delete_{work.id}"] = True
 
             if st.session_state.get(f"confirm_delete_{work.id}"):
-                warning(f"Esta acción eliminará permanentemente: {work.name}")
+                st.warning(f"Esta acción eliminará permanentemente: {work.name}")
                 confirm, cancel = st.columns(2)
 
                 if confirm.button(
@@ -106,7 +105,6 @@ def render_works_page(user: User, service: WorkService) -> None:
         render_page_hero(
             "Mis obras",
             subtitle=f"Sesión iniciada como {user.name} · {user.email}",
-            eyebrow="ASEG · ANÁLISIS DE EJECUCIÓN",
         )
 
     with logout_col:
@@ -118,7 +116,7 @@ def render_works_page(user: User, service: WorkService) -> None:
 
     works = service.list_active(user.id)
     if not works:
-        info("Aún no tiene obras activas registradas.")
+        st.info("Aún no tiene obras activas registradas.")
     else:
         render_section_heading(
             "Obras activas",
