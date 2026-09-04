@@ -10,20 +10,13 @@ def render_page_hero(
     subtitle: str | None = None,
     eyebrow: str | None = None,
 ) -> None:
-    eyebrow_html = (
-        f'<div class="page-hero__eyebrow">{html.escape(eyebrow)}</div>'
-        if eyebrow
-        else ""
-    )
+    del eyebrow
     subtitle_html = (
-        f'<p class="page-hero__subtitle">{html.escape(subtitle)}</p>'
-        if subtitle
-        else ""
+        f"<p>{html.escape(subtitle)}</p>" if subtitle else ""
     )
     st.markdown(
         f"""
-        <section class="page-hero">
-            {eyebrow_html}
+        <section class="institutional-header">
             <h1>{html.escape(title)}</h1>
             {subtitle_html}
         </section>
@@ -34,12 +27,12 @@ def render_page_hero(
 
 def render_section_heading(title: str, description: str | None = None) -> None:
     description_html = (
-        f'<p>{html.escape(description)}</p>' if description else ""
+        f"<p>{html.escape(description)}</p>" if description else ""
     )
     st.markdown(
         f"""
-        <div class="section-heading">
-            <h2>{html.escape(title)}</h2>
+        <div class="aseg-section-heading">
+            <h3>{html.escape(title)}</h3>
             {description_html}
         </div>
         """,
