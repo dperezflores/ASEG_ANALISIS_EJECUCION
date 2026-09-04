@@ -5,6 +5,8 @@ import streamlit as st
 from application.services.work_service import WorkService
 from domain.users import User
 from domain.works import NewWork, Work
+from presentation.components import render_page_hero, render_section_heading
+from presentation.messages import error, info, success, warning
 
 
 def _work_label(work: Work) -> str:
@@ -13,7 +15,7 @@ def _work_label(work: Work) -> str:
 
 def _render_work_card(work: Work, user: User, service: WorkService) -> None:
     with st.container(border=True):
-        st.markdown(f"**{work.name}**")
+        st.markdown(f'<div class="work-card__title">{work.name}</div>', unsafe_allow_html=True)
 
         col_open, col_archive = st.columns([1, 1])
         if col_open.button(
@@ -54,10 +56,10 @@ def _render_create_form(user: User, service: WorkService) -> None:
                     user.id,
                     NewWork(name=identifier),
                 )
-                st.success("Obra registrada correctamente.")
+                success("Obra registrada correctamente.")
                 st.rerun()
             except ValueError as exc:
-                st.error(str(exc))
+                error(str(exc))
 
 
 def _render_archived(user: User, service: WorkService) -> None:
@@ -78,7 +80,7 @@ def _render_archived(user: User, service: WorkService) -> None:
                 st.session_state[f"confirm_delete_{work.id}"] = True
 
             if st.session_state.get(f"confirm_delete_{work.id}"):
-                st.warning(f"Esta acción eliminará permanentemente: {work.name}")
+                warning(f"Esta acción eliminará permanentemente: {work.name}")
                 confirm, cancel = st.columns(2)
 
                 if confirm.button(
@@ -98,19 +100,30 @@ def _render_archived(user: User, service: WorkService) -> None:
 
 
 def render_works_page(user: User, service: WorkService) -> None:
-    st.markdown("### Mis obras")
-    st.caption(f"Sesión iniciada como {user.name} · {user.email}")
+    hero_col, logout_col = st.columns([6, 1])
 
-    col_create, col_logout = st.columns([5, 1])
-    with col_logout:
+    with hero_col:
+        render_page_hero(
+            "Mis obras",
+            subtitle=f"Sesión iniciada como {user.name} · {user.email}",
+            eyebrow="ASEG · ANÁLISIS DE EJECUCIÓN",
+        )
+
+    with logout_col:
+        st.write("")
+        st.write("")
         st.button("Cerrar sesión", on_click=st.logout, use_container_width=True)
 
     _render_create_form(user, service)
 
     works = service.list_active(user.id)
     if not works:
-        st.info("Aún no tiene obras activas registradas.")
+        info("Aún no tiene obras activas registradas.")
     else:
+        render_section_heading(
+            "Obras activas",
+            "Seleccione una obra para abrir su espacio de análisis documental.",
+        )
         for work in works:
             _render_work_card(work, user, service)
 
