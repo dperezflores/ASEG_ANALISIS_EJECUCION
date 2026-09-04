@@ -32,11 +32,17 @@
     -webkit-text-fill-color: #FFFFFF !important;
 }
 
-[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stTooltipIcon"] svg,
-[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stTooltipIcon"] svg * {
-    color: #FFFFFF !important;
-    fill: #FFFFFF !important;
-    stroke: #FFFFFF !important;
+/* Icono de ayuda de API Key: no forzar sus paths internos a blanco sólido,
+   porque eso convierte el símbolo de información en un punto. */
+[data-testid="stSidebar"] [data-testid="stTooltipIcon"] {
+    color: #DDEBF3 !important;
+    opacity: 0.95 !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stTooltipIcon"] svg {
+    color: #DDEBF3 !important;
+    fill: currentColor !important;
+    stroke: none !important;
 }
 
 [data-testid="stSidebar"] [data-testid="stExpander"] input,
@@ -71,4 +77,25 @@
     color: #00304F !important;
     fill: #00304F !important;
     stroke: #00304F !important;
+}
+
+/* El header técnico de Streamlit se mantiene transparente, pero recupera altura
+   suficiente para que Share/GitHub/menú no queden recortados contra el borde superior. */
+[data-testid="stHeader"] {
+    height: 3rem !important;
+    min-height: 3rem !important;
+    overflow: visible !important;
+    background: transparent !important;
+}
+
+[data-testid="stHeader"] > div,
+[data-testid="stToolbar"],
+[data-testid="stHeaderActionElements"],
+[data-testid="stActionElements"] {
+    overflow: visible !important;
+}
+
+[data-testid="stToolbar"],
+[data-testid="stHeaderActionElements"] {
+    top: 0.35rem !important;
 }
