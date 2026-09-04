@@ -10,7 +10,7 @@ def render_sidebar() -> dict[str, list]:
     with st.sidebar:
         st.header("📂 Documentación")
 
-        with st.expander("⚙️ Configuración de IA", expanded=True):
+        with st.expander("Configuración de IA", expanded=True):
             st.selectbox("Proveedor", ["Gemini"], disabled=True)
             st.session_state.modelo = st.text_input(
                 "Modelo",
