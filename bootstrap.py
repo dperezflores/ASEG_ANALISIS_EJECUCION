@@ -10,7 +10,6 @@ from config.settings import get_secret, get_settings
 from infrastructure.auth.streamlit_oidc import identity_from_streamlit_user
 from presentation.login_page import render_login_page
 from presentation.main_page import render_main_page
-from presentation.messages import error
 from presentation.setup_page import render_setup_required
 from presentation.styles import load_styles
 from presentation.works_page import render_works_page
@@ -67,7 +66,7 @@ def run() -> None:
         user = build_auth_service().sync_user(identity)
         work_service = build_work_service()
     except Exception as exc:
-        error(f"No fue posible inicializar la sesión del usuario: {exc}")
+        st.error(f"No fue posible inicializar la sesión del usuario: {exc}")
         return
 
     st.session_state.current_user = user
