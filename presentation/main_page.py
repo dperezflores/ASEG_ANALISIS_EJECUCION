@@ -4,11 +4,10 @@ from collections import defaultdict
 
 import streamlit as st
 
-from application.analysis_service import AnalysisService
+from composition import build_analysis_service
 from domain.categories import CATEGORIAS
 from presentation.results import render_results
 from presentation.sidebar import render_sidebar
-from providers.gemini import GeminiProvider
 
 
 def _build_file_index(files_by_category: dict[str, list]):
@@ -33,11 +32,10 @@ def _process_selection(selection, file_index) -> None:
         st.error("Capture una clave API de Gemini antes de procesar.")
         return
 
-    provider = GeminiProvider(
+    service = build_analysis_service(
         st.session_state.api_key,
         st.session_state.modelo,
     )
-    service = AnalysisService(provider)
 
     grouped = defaultdict(list)
     for label in selection:
