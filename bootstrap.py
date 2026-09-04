@@ -8,9 +8,9 @@ from application.session import clear_active_work, initialize_session
 from composition import build_auth_service, build_work_service
 from config.settings import get_secret, get_settings
 from infrastructure.auth.streamlit_oidc import identity_from_streamlit_user
-from presentation.app_header import render_app_header
 from presentation.login_page import render_login_page
 from presentation.main_page import render_main_page
+from presentation.messages import error
 from presentation.setup_page import render_setup_required
 from presentation.styles import load_styles
 from presentation.works_page import render_works_page
@@ -67,11 +67,10 @@ def run() -> None:
         user = build_auth_service().sync_user(identity)
         work_service = build_work_service()
     except Exception as exc:
-        st.error(f"No fue posible inicializar la sesión del usuario: {exc}")
+        error(f"No fue posible inicializar la sesión del usuario: {exc}")
         return
 
     st.session_state.current_user = user
-    render_app_header()
 
     active_work = None
     if st.session_state.active_work_id:
