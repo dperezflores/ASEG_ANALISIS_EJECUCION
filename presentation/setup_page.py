@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import streamlit as st
 
+from presentation.messages import warning
+
 
 def render_setup_required(missing: list[str]) -> None:
     st.markdown("### Configuración requerida")
-    st.warning(
+    warning(
         "La aplicación está preparada para autenticación Google y persistencia "
         "en Neon, pero faltan secretos del despliegue."
     )
