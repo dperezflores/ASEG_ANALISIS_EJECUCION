@@ -7,41 +7,59 @@ Mantener una aplicación pequeña, modular y extensible sin introducir sobreinge
 ## Capas
 
 ### `domain/`
-Contiene conceptos y modelos propios del negocio. No debe depender de Streamlit, Gemini, OpenAI, Neon ni de infraestructura externa.
+Contiene conceptos y modelos propios del negocio. No depende de Streamlit, Gemini, OpenAI, Neon ni de infraestructura externa.
+
+Modelos actuales principales:
+- Usuario e identidad externa.
+- Obra/Contrato y su estado.
+- Estimación, Factura, Comprobante de Pago y Póliza.
 
 ### `application/`
-Contiene los casos de uso y los puertos (interfaces) que necesita la aplicación. Aquí viven el analizador documental, el servicio de análisis y los contratos para proveedores de IA y repositorios de prompts.
+Contiene casos de uso y puertos (interfaces). Actualmente incluye:
+- análisis documental;
+- sincronización de usuarios;
+- administración de obras;
+- contratos para proveedores de IA;
+- contratos para repositorios de prompts, usuarios y obras.
 
 ### `infrastructure/`
-Implementa los puertos definidos por la capa de aplicación. Actualmente contiene Gemini y la lectura de prompts desde archivos. Posteriormente alojará OpenAI, Neon y otros servicios externos.
+Implementa los puertos definidos por la aplicación. Actualmente contiene:
+- Gemini;
+- lectura de prompts desde archivos;
+- autenticación OIDC de Streamlit/Google;
+- conexión PostgreSQL;
+- repositorios Neon de usuarios y obras.
 
 ### `presentation/`
-Contiene exclusivamente la interfaz Streamlit y sus componentes. No debe implementar reglas de extracción ni llamadas directas a proveedores externos.
+Contiene exclusivamente la interfaz Streamlit. Incluye login, selección/registro de obras, sidebar, centro de análisis y resultados. No contiene SQL ni llamadas directas a Gemini.
 
 ### `reports/`
-Contiene generación y transformación de reportes Excel. Se mantiene separada porque son transformaciones deterministas e independientes del proveedor de IA.
+Generación y transformación determinista de reportes Excel.
 
 ### `resources/prompts/`
-Contiene los prompts de auditoría como archivos independientes y versionables. Modificar un prompt no requiere modificar código Python.
+Prompts de auditoría como archivos independientes y versionables.
 
 ### `assets/`
-Contiene recursos visuales, como CSS específico de tablas.
+Recursos visuales, incluido CSS específico de tablas.
 
 ### `config/`
-Centraliza configuración general y acceso controlado a secretos o variables de entorno.
+Configuración general y acceso controlado a secretos o variables de entorno.
+
+### `sql/`
+Migraciones versionadas del esquema PostgreSQL/Neon.
 
 ## Composition Root
 
-`composition.py` es el único punto encargado de ensamblar implementaciones concretas con los casos de uso. La presentación solicita un `AnalysisService` sin conocer cómo se construye Gemini ni cómo se cargan los prompts.
+`composition.py` ensambla implementaciones concretas con los casos de uso. La presentación solicita servicios y no conoce cómo se construye Gemini ni cómo se conecta Neon.
 
 ## Paradigma
 
 Se utiliza un enfoque híbrido:
 
-- POO para servicios con dependencias y componentes intercambiables (`AnalysisService`, `DocumentAnalyzer`, proveedores y repositorios).
-- Protocolos para inversión de dependencias (`AIProvider`, `PromptRepository`).
+- POO para servicios con dependencias y componentes intercambiables (`AnalysisService`, `DocumentAnalyzer`, `AuthService`, `WorkService`, proveedores y repositorios).
+- Protocolos para inversión de dependencias (`AIProvider`, `PromptRepository`, `UserRepository`, `WorkRepository`).
 - Funciones puras para generación de reportes y transformaciones deterministas.
-- Streamlit queda limitado a la capa de presentación y sesión temporal.
+- Streamlit queda limitado a presentación y estado temporal de sesión.
 
 ## Reglas de dependencia
 
@@ -53,6 +71,24 @@ Las dependencias deben apuntar hacia adentro:
 
 La capa `domain` no conoce ninguna tecnología externa.
 
+## Seguridad multiusuario
+
+Toda operación sobre una obra debe validar simultáneamente:
+- `obra_id`;
+- `usuario_id` autenticado.
+
+La interfaz nunca se considera una frontera de seguridad suficiente. Los repositorios aplican la pertenencia del recurso en sus consultas.
+
+Las API keys de IA y las credenciales OIDC/Neon no se almacenan en GitHub. Los secretos de infraestructura viven en Streamlit Secrets.
+
+## Persistencia
+
+La jerarquía objetivo es:
+
+`Usuario -> Obra/Contrato -> Documento -> Resultado de análisis`
+
+La fase actual implementa `Usuario -> Obra/Contrato`. La persistencia de documentos y resultados se añadirá en la siguiente etapa sin cambiar el motor de análisis existente.
+
 ## Evolución prevista
 
-La incorporación de OpenAI se realizará mediante una nueva implementación de `AIProvider`. Neon se incorporará mediante puertos de repositorio en `application/ports/` e implementaciones concretas en `infrastructure/database/`, sin introducir SQL en la presentación.
+OpenAI se incorporará mediante una nueva implementación de `AIProvider`. La persistencia de documentos y resultados utilizará nuevos puertos en `application/ports/` e implementaciones Neon en `infrastructure/database/` sin introducir SQL en la presentación.
