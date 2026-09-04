@@ -17,6 +17,9 @@ def initialize_session() -> None:
         "modelo",
         get_secret("GEMINI_MODEL", "gemini-2.5-flash"),
     )
+    st.session_state.setdefault("current_user", None)
+    st.session_state.setdefault("active_work_id", None)
+    st.session_state.setdefault("active_work_name", None)
 
 
 def get_history(categoria: str) -> list[dict]:
@@ -33,3 +36,14 @@ def is_processed(key: str) -> bool:
 
 def mark_processed(key: str) -> None:
     st.session_state.procesados.add(key)
+
+
+def clear_active_work() -> None:
+    st.session_state.active_work_id = None
+    st.session_state.active_work_name = None
+    st.session_state.historial = {categoria: [] for categoria in CATEGORIAS}
+    st.session_state.procesados = set()
+
+    for key in list(st.session_state.keys()):
+        if key.startswith("up_") or key.startswith("confirm_delete_"):
+            st.session_state.pop(key, None)
