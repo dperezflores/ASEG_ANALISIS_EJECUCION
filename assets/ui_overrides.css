@@ -1,7 +1,6 @@
 /* Ajustes visuales puntuales cargados después de estilos.css. */
 
-/* Streamlit puede aplicar color al texto interno del botón mediante spans/p.
-   Se fuerza blanco en todo el contenido para garantizar contraste sobre naranja. */
+/* Texto de botones institucionales en blanco para garantizar contraste. */
 .stButton > button,
 .stButton > button *,
 .stDownloadButton > button,
@@ -12,19 +11,8 @@
     -webkit-text-fill-color: #FFFFFF !important;
 }
 
-.stButton > button svg,
-.stDownloadButton > button svg,
-[data-testid="stFormSubmitButton"] > button svg,
-.stButton > button svg *,
-.stDownloadButton > button svg *,
-[data-testid="stFormSubmitButton"] > button svg * {
-    color: #FFFFFF !important;
-    fill: #FFFFFF !important;
-    stroke: #FFFFFF !important;
-}
-
-/* Configuración de IA: los rótulos deben contrastar con el fondo azul del sidebar.
-   El contenido de los inputs se mantiene oscuro sobre fondo blanco. */
+/* Rótulos de Configuración de IA: contraste con el fondo azul del sidebar.
+   No se alteran inputs, selects, tooltips ni otros widgets internos. */
 [data-testid="stSidebar"] [data-testid="stExpander"] label,
 [data-testid="stSidebar"] [data-testid="stExpander"] label p,
 [data-testid="stSidebar"] [data-testid="stExpander"] label span {
@@ -32,28 +20,8 @@
     -webkit-text-fill-color: #FFFFFF !important;
 }
 
-/* Icono de ayuda de API Key: no forzar sus paths internos a blanco sólido,
-   porque eso convierte el símbolo de información en un punto. */
-[data-testid="stSidebar"] [data-testid="stTooltipIcon"] {
-    color: #DDEBF3 !important;
-    opacity: 0.95 !important;
-}
-
-[data-testid="stSidebar"] [data-testid="stTooltipIcon"] svg {
-    color: #DDEBF3 !important;
-    fill: currentColor !important;
-    stroke: none !important;
-}
-
-[data-testid="stSidebar"] [data-testid="stExpander"] input,
-[data-testid="stSidebar"] [data-testid="stExpander"] textarea,
-[data-testid="stSidebar"] [data-testid="stExpander"] div[data-baseweb="select"] > div {
-    color: #362D32 !important;
-    -webkit-text-fill-color: #362D32 !important;
-}
-
-/* Control para reabrir el sidebar: sin caja azul, borde ni sombra.
-   Se conserva únicamente el icono en azul institucional sobre el fondo claro. */
+/* Control para reabrir el sidebar: sin caja, borde ni sombra.
+   El color del icono queda a cargo de Streamlit y de su tema activo. */
 [data-testid="collapsedControl"],
 [data-testid="stExpandSidebarButton"] {
     background: transparent !important;
@@ -70,17 +38,7 @@
     box-shadow: none !important;
 }
 
-[data-testid="collapsedControl"] svg,
-[data-testid="stExpandSidebarButton"] svg,
-[data-testid="collapsedControl"] svg *,
-[data-testid="stExpandSidebarButton"] svg * {
-    color: #00304F !important;
-    fill: #00304F !important;
-    stroke: #00304F !important;
-}
-
-/* El header técnico de Streamlit se mantiene transparente, pero recupera altura
-   suficiente para que Share/GitHub/menú no queden recortados contra el borde superior. */
+/* El header técnico conserva altura suficiente para los controles nativos. */
 [data-testid="stHeader"] {
     height: 3rem !important;
     min-height: 3rem !important;
