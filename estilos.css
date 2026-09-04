@@ -123,3 +123,40 @@
     font-weight: 800;
     text-transform: uppercase;
 }
+
+/* Pantalla de acceso: patrón visual del extractor-catalogos-presupuestos. */
+.login-shell {
+    max-width: 650px;
+    margin: 9vh auto 0 auto;
+    background: #FFFFFF;
+    border: 1px solid #E7DED9;
+    border-top: 6px solid #FF5E12;
+    border-radius: 18px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 18px 48px rgba(0, 48, 79, 0.14);
+}
+
+.login-shell h1 {
+    color: #00304F;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    margin: 0 0 1.1rem 0;
+    font-weight: 800;
+}
+
+.login-shell p {
+    color: #362D32;
+    margin: 0.35rem 0;
+}
+
+.login-shell .muted-note {
+    color: #756B70;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 700px) {
+    .login-shell {
+        margin-top: 4vh;
+        padding: 1.5rem 1.1rem;
+    }
+}
