@@ -2,7 +2,7 @@
 
 Aplicación independiente extraída del módulo de Ejecución de `aseg_auditor_IA`.
 
-## Fase 1
+## Alcance actual
 
 Esta versión contiene exclusivamente:
 
@@ -14,8 +14,24 @@ Esta versión contiene exclusivamente:
 - Esquemas estructurados con Pydantic.
 - Reportes Excel con el orden institucional utilizado en el proyecto de origen.
 - Interfaz Streamlit y estilo institucional base.
+- Prompts de auditoría independientes y versionables en `resources/prompts/`.
 
-Esta fase **no comparte ejecución ni persistencia** con Auditor IA y no modifica el repositorio original.
+Esta aplicación **no comparte ejecución ni persistencia** con Auditor IA y no modifica el repositorio original.
+
+## Arquitectura
+
+El proyecto utiliza una arquitectura modular inspirada en Clean Architecture / Ports and Adapters, sin llevarla a un nivel de complejidad innecesario para el tamaño actual de la aplicación.
+
+- `domain/`: modelos y conceptos del dominio.
+- `application/`: casos de uso, analizador y puertos/interfaces.
+- `infrastructure/`: Gemini y acceso a recursos externos.
+- `presentation/`: interfaz Streamlit.
+- `reports/`: generación determinista de reportes Excel.
+- `resources/prompts/`: prompts independientes por tipo documental.
+- `assets/` y `estilos.css`: estilos visuales.
+- `composition.py`: ensamblado de dependencias concretas.
+
+La explicación completa está en `ARCHITECTURE.md`.
 
 ## Seguridad
 
@@ -28,7 +44,7 @@ python -m pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Arquitectura prevista
+## Evolución prevista
 
 La siguiente fase incorporará:
 
