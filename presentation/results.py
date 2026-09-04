@@ -4,7 +4,6 @@ import streamlit as st
 
 from application.session import get_history
 from domain.categories import CATEGORIAS, CategoriaDocumento
-from presentation.messages import info
 from presentation.table_component import render_report_table
 from reports import excel as report_builder
 
@@ -44,7 +43,7 @@ def render_results() -> None:
     reports = build_reports()
 
     if not reports:
-        info("Cargue y analice documentos para generar los reportes.")
+        st.info("Cargue y analice documentos para generar los reportes.")
         return
 
     tabs = st.tabs([f"📊 {name}" for name in reports])
