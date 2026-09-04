@@ -57,12 +57,27 @@
     box-shadow: none !important;
 }
 
-/* Control para cerrar el sidebar: sólo en hover el icono cambia a blanco.
-   No afecta al control de reapertura cuando el panel está cerrado. */
-[data-testid="stSidebarCollapseButton"]:hover svg,
-[data-testid="stSidebarCollapseButton"]:hover svg *,
+/* Control para cerrar el sidebar: sólo en hover cambia a blanco.
+   Streamlit puede representar el icono como SVG o como icono tipográfico/material,
+   por eso se aplica el color al botón y a todos sus descendientes. */
+[data-testid="stSidebarCollapseButton"] button:hover,
+[data-testid="stSidebarCollapseButton"]:hover button {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
+[data-testid="stSidebarCollapseButton"] button:hover *,
+[data-testid="stSidebarCollapseButton"]:hover button *,
+[data-testid="stSidebarCollapseButton"]:hover span,
+[data-testid="stSidebarCollapseButton"]:hover [data-testid="stIconMaterial"] {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
 [data-testid="stSidebarCollapseButton"] button:hover svg,
-[data-testid="stSidebarCollapseButton"] button:hover svg * {
+[data-testid="stSidebarCollapseButton"] button:hover svg *,
+[data-testid="stSidebarCollapseButton"]:hover svg,
+[data-testid="stSidebarCollapseButton"]:hover svg * {
     color: #FFFFFF !important;
     fill: #FFFFFF !important;
     stroke: #FFFFFF !important;
