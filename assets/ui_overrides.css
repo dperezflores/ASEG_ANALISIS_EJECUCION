@@ -20,6 +20,25 @@
     -webkit-text-fill-color: #FFFFFF !important;
 }
 
+/* Icono de ayuda de API Key: sólo se modifica el trazo para hacerlo visible
+   sobre el fondo azul. No se rellena el SVG para conservar la forma del icono. */
+[data-testid="stSidebar"] [data-testid="stTooltipIcon"] {
+    color: #FFFFFF !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stTooltipIcon"] svg {
+    color: #FFFFFF !important;
+    stroke: #FFFFFF !important;
+    fill: none !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stTooltipIcon"] svg path,
+[data-testid="stSidebar"] [data-testid="stTooltipIcon"] svg circle,
+[data-testid="stSidebar"] [data-testid="stTooltipIcon"] svg line {
+    stroke: #FFFFFF !important;
+    fill: none !important;
+}
+
 /* Control para reabrir el sidebar: sin caja, borde ni sombra.
    El color del icono queda a cargo de Streamlit y de su tema activo. */
 [data-testid="collapsedControl"],
