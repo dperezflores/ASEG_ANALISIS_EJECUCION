@@ -4,8 +4,10 @@ from collections import defaultdict
 
 import streamlit as st
 
+from application.session import clear_active_work
 from composition import build_analysis_service
 from domain.categories import CATEGORIAS
+from domain.works import Work
 from presentation.results import render_results
 from presentation.sidebar import render_sidebar
 
@@ -80,12 +82,22 @@ def _process_selection(selection, file_index) -> None:
         st.info(f"ℹ️ Documentos omitidos por resultado vigente: {skipped}.")
 
 
-def render_main_page() -> None:
-    st.markdown("### Análisis documental de ejecución")
-    st.caption(
-        "Versión independiente de Estimaciones, Facturas, "
-        "Comprobantes de Pago y Pólizas."
-    )
+def render_main_page(active_work: Work) -> None:
+    header_left, header_right = st.columns([6, 1])
+    with header_left:
+        st.markdown("### Análisis documental de ejecución")
+        st.caption(
+            f"Obra activa: {active_work.name}"
+            + (
+                f" · Contrato: {active_work.contract_number}"
+                if active_work.contract_number
+                else ""
+            )
+        )
+    with header_right:
+        if st.button("Cambiar obra", use_container_width=True):
+            clear_active_work()
+            st.rerun()
 
     files_by_category = render_sidebar()
     labels, file_index = _build_file_index(files_by_category)
