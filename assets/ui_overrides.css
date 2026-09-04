@@ -1,0 +1,24 @@
+/* Ajustes visuales puntuales cargados después de estilos.css. */
+
+/* Streamlit puede aplicar color al texto interno del botón mediante spans/p.
+   Se fuerza blanco en todo el contenido para garantizar contraste sobre naranja. */
+.stButton > button,
+.stButton > button *,
+.stDownloadButton > button,
+.stDownloadButton > button *,
+[data-testid="stFormSubmitButton"] > button,
+[data-testid="stFormSubmitButton"] > button * {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
+.stButton > button svg,
+.stDownloadButton > button svg,
+[data-testid="stFormSubmitButton"] > button svg,
+.stButton > button svg *,
+.stDownloadButton > button svg *,
+[data-testid="stFormSubmitButton"] > button svg * {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+    stroke: #FFFFFF !important;
+}
