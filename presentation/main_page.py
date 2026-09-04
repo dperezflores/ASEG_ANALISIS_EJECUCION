@@ -9,7 +9,6 @@ from composition import build_analysis_service
 from domain.categories import CATEGORIAS
 from domain.works import Work
 from presentation.components import render_page_hero, render_section_heading
-from presentation.messages import error, info, success, warning
 from presentation.results import render_results
 from presentation.sidebar import render_sidebar
 
@@ -29,11 +28,11 @@ def _build_file_index(files_by_category: dict[str, list]):
 
 def _process_selection(selection, file_index) -> None:
     if not selection:
-        warning("Seleccione al menos un archivo.")
+        st.warning("Seleccione al menos un archivo.")
         return
 
     if not st.session_state.api_key.strip():
-        error("Capture una clave API de Gemini antes de procesar.")
+        st.error("Capture una clave API de Gemini antes de procesar.")
         return
 
     service = build_analysis_service(
@@ -67,7 +66,7 @@ def _process_selection(selection, file_index) -> None:
             else:
                 errors += 1
                 if result:
-                    error(f"{file.name}: {'; '.join(result.errores)}")
+                    st.error(f"❌ {file.name}: {'; '.join(result.errores)}")
 
             progress.progress(
                 processed / total_files,
@@ -77,11 +76,11 @@ def _process_selection(selection, file_index) -> None:
     progress.empty()
 
     if successes:
-        success(f"Documentos analizados correctamente: {successes}.")
+        st.success(f"✅ Documentos analizados correctamente: {successes}.")
     if errors:
-        error(f"Documentos con error: {errors}.")
+        st.error(f"⚠️ Documentos con error: {errors}.")
     if skipped:
-        info(f"Documentos omitidos por resultado vigente: {skipped}.")
+        st.info(f"ℹ️ Documentos omitidos por resultado vigente: {skipped}.")
 
 
 def _logout() -> None:
@@ -99,7 +98,6 @@ def render_main_page(active_work: Work) -> None:
         render_page_hero(
             "Análisis documental de ejecución",
             subtitle=subtitle,
-            eyebrow="ASEG · EJECUCIÓN",
         )
 
     with change_work_col:
@@ -133,7 +131,7 @@ def render_main_page(active_work: Work) -> None:
         if st.button("🚀 Procesar selección", type="primary"):
             _process_selection(selection, file_index)
     else:
-        warning("No hay documentos cargados en las carpetas de ejecución.")
+        st.warning("No hay documentos cargados en las carpetas de ejecución.")
 
     st.markdown("---")
     render_results()
