@@ -22,3 +22,53 @@
     fill: #FFFFFF !important;
     stroke: #FFFFFF !important;
 }
+
+/* Configuración de IA: los rótulos deben contrastar con el fondo azul del sidebar.
+   El contenido de los inputs se mantiene oscuro sobre fondo blanco. */
+[data-testid="stSidebar"] [data-testid="stExpander"] label,
+[data-testid="stSidebar"] [data-testid="stExpander"] label p,
+[data-testid="stSidebar"] [data-testid="stExpander"] label span {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stTooltipIcon"] svg,
+[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stTooltipIcon"] svg * {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+    stroke: #FFFFFF !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stExpander"] input,
+[data-testid="stSidebar"] [data-testid="stExpander"] textarea,
+[data-testid="stSidebar"] [data-testid="stExpander"] div[data-baseweb="select"] > div {
+    color: #362D32 !important;
+    -webkit-text-fill-color: #362D32 !important;
+}
+
+/* Control para reabrir el sidebar: sin caja azul, borde ni sombra.
+   Se conserva únicamente el icono en azul institucional sobre el fondo claro. */
+[data-testid="collapsedControl"],
+[data-testid="stExpandSidebarButton"] {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+[data-testid="collapsedControl"]:hover,
+[data-testid="stExpandSidebarButton"]:hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+[data-testid="collapsedControl"] svg,
+[data-testid="stExpandSidebarButton"] svg,
+[data-testid="collapsedControl"] svg *,
+[data-testid="stExpandSidebarButton"] svg * {
+    color: #00304F !important;
+    fill: #00304F !important;
+    stroke: #00304F !important;
+}
