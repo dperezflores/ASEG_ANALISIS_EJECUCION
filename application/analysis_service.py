@@ -2,27 +2,27 @@ from __future__ import annotations
 
 import hashlib
 
-from application.analyzer import analizar
+from application.analyzer import DocumentAnalyzer
 from application.session import append_history, is_processed, mark_processed
 from domain.categories import CATEGORIAS
-from providers.base import AIProvider
 
 
 class AnalysisService:
-    def __init__(self, provider: AIProvider):
-        self.provider = provider
+    def __init__(self, analyzer: DocumentAnalyzer):
+        self.analyzer = analyzer
 
     @staticmethod
     def fingerprint(file) -> str:
         return hashlib.sha256(file.getvalue()).hexdigest()
 
     def processing_key(self, categoria: str, file) -> str:
+        provider = self.analyzer.provider
         return (
             f"{categoria}:"
             f"{self.fingerprint(file)}:"
-            f"{self.provider.provider_name}:"
-            f"{self.provider.model_name}:"
-            f"{self.provider.prompt_version}"
+            f"{provider.provider_name}:"
+            f"{provider.model_name}:"
+            f"{provider.prompt_version}"
         )
 
     def process_file(self, categoria: str, file):
@@ -33,7 +33,7 @@ class AnalysisService:
         if is_processed(key):
             return None, True
 
-        result = analizar(self.provider, categoria, file)
+        result = self.analyzer.analyze(categoria, file)
 
         if result.estado == "OK":
             for record in result.datos:
