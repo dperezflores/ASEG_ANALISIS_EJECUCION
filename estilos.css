@@ -1,17 +1,14 @@
 :root {
     color-scheme: light;
-    --aseg-orange: #FF5E12;
-    --aseg-orange-soft: #FF7D42;
-    --aseg-charcoal: #362D32;
-    --aseg-blue: #00304F;
-    --aseg-gray: #D6D6D6;
-    --aseg-peach: #FFBAA3;
+    --orange: #FF5E12;
+    --orange-soft: #FF7D42;
+    --charcoal: #362D32;
+    --blue: #00304F;
+    --progress-blue: #1976D2;
+    --progress-track: #DCEAF7;
     --surface: #FFFFFF;
-    --surface-soft: #F4F6F8;
-    --surface-blue: #EEF4F7;
-    --text-muted: #6B7075;
-    --shadow-sm: 0 4px 14px rgba(0, 48, 79, 0.08);
-    --shadow-md: 0 10px 28px rgba(0, 48, 79, 0.12);
+    --surface-soft: #F7F4F2;
+    --border: #E7DED9;
 }
 
 html,
@@ -19,11 +16,16 @@ body,
 [data-testid="stAppViewContainer"],
 .stApp {
     color-scheme: light !important;
-    background: var(--surface-soft) !important;
-    color: var(--aseg-charcoal) !important;
 }
 
-/* Streamlit conserva únicamente una barra técnica transparente para sus controles. */
+.stApp {
+    background:
+        radial-gradient(circle at 95% 2%, rgba(255, 125, 66, 0.12), transparent 22rem),
+        linear-gradient(180deg, #FFFFFF 0%, #FBF9F8 100%) !important;
+    color: var(--charcoal) !important;
+}
+
+/* La identidad visual no depende de un header propio ni del header nativo. */
 [data-testid="stHeader"] {
     background: transparent !important;
     border: 0 !important;
@@ -37,91 +39,95 @@ body,
     display: none !important;
 }
 
+.stAppDeployButton,
+[data-testid="stActionElements"] {
+    display: none !important;
+}
+
+/* Mantener visible el control nativo para volver a abrir el sidebar. */
 [data-testid="collapsedControl"],
 [data-testid="stExpandSidebarButton"] {
     position: fixed !important;
-    top: 0.9rem !important;
+    top: 0.85rem !important;
     left: 0.85rem !important;
     z-index: 10001 !important;
-    background: #FFFFFF !important;
-    border: 1px solid var(--aseg-gray) !important;
+    background: var(--blue) !important;
     border-radius: 10px !important;
-    box-shadow: var(--shadow-sm) !important;
+    border: 0 !important;
 }
 
 [data-testid="collapsedControl"] svg,
 [data-testid="stExpandSidebarButton"] svg,
 [data-testid="collapsedControl"] svg *,
 [data-testid="stExpandSidebarButton"] svg * {
-    color: var(--aseg-blue) !important;
-    fill: var(--aseg-blue) !important;
-    stroke: var(--aseg-blue) !important;
-}
-
-.stAppDeployButton,
-[data-testid="stActionElements"] {
-    display: none !important;
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+    stroke: #FFFFFF !important;
 }
 
 .block-container {
     max-width: 1500px !important;
-    padding-top: 2rem !important;
+    padding-top: 1.5rem !important;
     padding-bottom: 3rem !important;
 }
 
-/* Tipografía y contraste estable en temas claros u oscuros del navegador. */
+/* Tipografía y campos: mismo criterio visual del extractor. */
 .stApp h1,
 .stApp h2,
 .stApp h3,
 .stApp h4,
 .stApp h5,
 .stApp h6 {
-    color: var(--aseg-blue) !important;
+    color: var(--blue) !important;
 }
 
 .stApp p,
 .stApp label,
 .stApp small,
 .stApp .stCaption {
-    color: var(--aseg-charcoal);
+    color: var(--charcoal);
 }
 
 .stApp input,
 .stApp textarea {
+    color: var(--charcoal) !important;
+    -webkit-text-fill-color: var(--charcoal) !important;
     background: #FFFFFF !important;
-    color: var(--aseg-charcoal) !important;
-    -webkit-text-fill-color: var(--aseg-charcoal) !important;
-    caret-color: var(--aseg-blue) !important;
 }
 
 .stApp input::placeholder,
 .stApp textarea::placeholder {
-    color: #858A8F !important;
-    -webkit-text-fill-color: #858A8F !important;
+    color: #756B70 !important;
+    -webkit-text-fill-color: #756B70 !important;
     opacity: 1 !important;
 }
 
 .stApp div[data-baseweb="select"] > div,
 .stApp div[data-baseweb="base-input"] {
+    color: var(--charcoal) !important;
     background: #FFFFFF !important;
-    color: var(--aseg-charcoal) !important;
 }
 
-/* Sidebar institucional. */
+/* Sidebar: réplica del extractor-catalogos-presupuestos. */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, var(--aseg-blue) 0%, #00263E 100%) !important;
-    border-right: 4px solid var(--aseg-orange) !important;
-    box-shadow: 8px 0 24px rgba(0, 48, 79, 0.12) !important;
+    background: linear-gradient(180deg, var(--blue) 0%, #001F33 100%) !important;
+    border-right: 4px solid var(--orange) !important;
 }
 
-[data-testid="stSidebar"] h1,
-[data-testid="stSidebar"] h2,
-[data-testid="stSidebar"] h3 {
-    color: #FFFFFF !important;
+[data-testid="stSidebar"] * {
+    color: #FFFFFF;
 }
 
-[data-testid="stSidebar"] > div:first-child {
-    padding-top: 1.1rem !important;
+[data-testid="stSidebar"] .stTextInput input {
+    color: var(--charcoal) !important;
+    -webkit-text-fill-color: var(--charcoal) !important;
+    background: #FFFFFF !important;
+}
+
+[data-testid="stSidebar"] div[data-baseweb="select"] > div,
+[data-testid="stSidebar"] div[data-baseweb="base-input"] {
+    background: #FFFFFF !important;
+    color: var(--charcoal) !important;
 }
 
 [data-testid="stSidebarCollapseButton"] svg,
@@ -131,242 +137,170 @@ body,
     stroke: #FFFFFF !important;
 }
 
+/* Las carpetas usan el lenguaje del sidebar oscuro del extractor. */
 [data-testid="stSidebar"] [data-testid="stExpander"] {
-    background: #FFFFFF !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
     border-radius: 12px !important;
     overflow: hidden !important;
-    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.12) !important;
     margin-bottom: 1rem !important;
 }
 
 [data-testid="stSidebar"] [data-testid="stExpander"] summary {
-    background: #FFFFFF !important;
-    color: var(--aseg-blue) !important;
+    background: transparent !important;
+    color: #FFFFFF !important;
     font-weight: 700 !important;
     padding: 0.8rem 0.9rem !important;
 }
 
 [data-testid="stSidebar"] [data-testid="stExpander"] summary:hover {
-    background: var(--surface-blue) !important;
-    color: var(--aseg-blue) !important;
+    background: rgba(255, 255, 255, 0.10) !important;
 }
 
 [data-testid="stSidebar"] [data-testid="stExpander"] summary * {
-    color: var(--aseg-blue) !important;
+    color: #FFFFFF !important;
 }
 
-[data-testid="stSidebar"] [data-testid="stExpander"] label,
-[data-testid="stSidebar"] [data-testid="stExpander"] p,
-[data-testid="stSidebar"] [data-testid="stExpander"] span,
-[data-testid="stSidebar"] [data-testid="stExpander"] small {
-    color: var(--aseg-charcoal) !important;
+[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stCaptionContainer"],
+[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stCaptionContainer"] * {
+    color: #DDEBF3 !important;
 }
 
 [data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {
-    background: #F8FAFB !important;
-    border-color: var(--aseg-gray) !important;
+    background: #FFFFFF !important;
+    border: 2px dashed #C8BDB7 !important;
+    border-radius: 14px !important;
 }
 
-/* Cabeceras de página dentro del contenido, no son headers globales. */
-.page-hero {
-    background: linear-gradient(135deg, #FFFFFF 0%, #F3F7F9 100%);
-    border: 1px solid var(--aseg-gray);
-    border-left: 6px solid var(--aseg-blue);
+[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] * {
+    color: var(--charcoal) !important;
+}
+
+/* Encabezado institucional dentro del contenido: mismo componente del extractor. */
+.institutional-header {
+    background: linear-gradient(125deg, var(--blue), #004A73);
+    border-left: 8px solid var(--orange);
     border-radius: 16px;
-    padding: 1.25rem 1.45rem;
-    margin: 0 0 1.25rem 0;
-    box-shadow: var(--shadow-md);
+    padding: 1.45rem 1.6rem;
+    margin: 0.25rem 0 1.3rem 0;
+    box-shadow: 0 12px 32px rgba(0, 48, 79, 0.16);
 }
 
-.page-hero__eyebrow {
-    color: var(--aseg-orange);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 0.4rem;
-}
-
-.page-hero h1 {
-    color: var(--aseg-blue) !important;
-    font-size: clamp(1.45rem, 2.5vw, 2rem);
-    line-height: 1.15;
+.institutional-header h1 {
+    color: #FFFFFF !important;
+    font-size: clamp(1.55rem, 3vw, 2.35rem);
+    line-height: 1.1;
     margin: 0 !important;
-    font-weight: 800;
 }
 
-.page-hero__subtitle {
-    color: var(--text-muted) !important;
+.institutional-header p {
+    color: #DDEBF3 !important;
+    font-size: 1rem;
     margin: 0.55rem 0 0 0 !important;
-    font-size: 0.92rem;
 }
 
-.section-heading {
-    margin: 1.5rem 0 0.8rem 0;
-    padding-left: 0.9rem;
-    border-left: 4px solid var(--aseg-orange);
+.aseg-section-heading {
+    margin: 1.35rem 0 0.85rem 0;
 }
 
-.section-heading h2 {
-    color: var(--aseg-blue) !important;
+.aseg-section-heading h3 {
+    color: var(--blue) !important;
     font-size: 1.05rem;
     margin: 0 !important;
-    font-weight: 800;
 }
 
-.section-heading p {
-    color: var(--text-muted) !important;
-    margin: 0.2rem 0 0 0;
+.aseg-section-heading p {
+    color: #655B60 !important;
     font-size: 0.88rem;
+    margin: 0.35rem 0 0 0 !important;
 }
 
-/* Tarjetas y expansores del contenido principal. */
+/* Tarjetas del contenido. */
 [data-testid="stMain"] [data-testid="stExpander"] {
     background: #FFFFFF !important;
-    border: 1px solid var(--aseg-gray) !important;
-    border-radius: 12px !important;
-    box-shadow: var(--shadow-sm) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 14px !important;
     overflow: hidden !important;
+    box-shadow: 0 7px 20px rgba(54, 45, 50, 0.07) !important;
 }
 
 [data-testid="stMain"] [data-testid="stExpander"] summary {
-    color: var(--aseg-blue) !important;
+    color: var(--blue) !important;
     font-weight: 700 !important;
 }
 
 [data-testid="stVerticalBlockBorderWrapper"] {
     background: #FFFFFF !important;
-    border-color: var(--aseg-gray) !important;
+    border: 1px solid var(--border) !important;
     border-radius: 14px !important;
-    box-shadow: var(--shadow-sm) !important;
+    box-shadow: 0 7px 20px rgba(54, 45, 50, 0.07) !important;
 }
 
-.work-card__title {
-    color: var(--aseg-blue);
-    font-size: 1rem;
-    font-weight: 800;
-    padding: 0.15rem 0 0.65rem 0;
-}
-
-/* Botones. Primarios en naranja; acciones secundarias en grafito. */
-.stButton button,
-[data-testid="stFormSubmitButton"] button,
-.stDownloadButton button {
-    border: none !important;
-    border-radius: 9px !important;
-    min-height: 2.55rem !important;
+/* Botones: réplica literal del extractor. */
+.stButton > button,
+.stDownloadButton > button,
+[data-testid="stFormSubmitButton"] > button {
+    border-radius: 10px !important;
     font-weight: 700 !important;
-    transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease !important;
+    min-height: 2.75rem !important;
+    transition: transform 120ms ease, box-shadow 120ms ease !important;
 }
 
-.stButton button,
-[data-testid="stFormSubmitButton"] button {
-    background: var(--aseg-charcoal) !important;
+.stButton > button,
+[data-testid="stFormSubmitButton"] > button,
+.stDownloadButton > button {
+    background: var(--orange) !important;
     color: #FFFFFF !important;
+    border: none !important;
 }
 
-.stButton button[kind="primary"],
-[data-testid="stFormSubmitButton"] button[kind="primary"] {
-    background: var(--aseg-orange) !important;
-    color: #FFFFFF !important;
-}
-
-.stDownloadButton button {
-    background: var(--aseg-blue) !important;
-    color: #FFFFFF !important;
-}
-
-.stButton button:hover,
-[data-testid="stFormSubmitButton"] button:hover,
-.stDownloadButton button:hover {
-    background: var(--aseg-orange-soft) !important;
+.stButton > button:hover,
+.stDownloadButton > button:hover,
+[data-testid="stFormSubmitButton"] > button:hover {
+    background: var(--orange-soft) !important;
     color: #FFFFFF !important;
     transform: translateY(-1px);
-    box-shadow: 0 7px 16px rgba(255, 94, 18, 0.20) !important;
+    box-shadow: 0 8px 18px rgba(255, 94, 18, 0.17) !important;
 }
 
-/* Selecciones, pestañas y controles. */
+/* Uploader y controles generales. */
+div[data-testid="stFileUploader"] section {
+    background: #FFFFFF !important;
+    border: 2px dashed #C8BDB7 !important;
+    border-radius: 14px !important;
+}
+
 [data-baseweb="tag"] {
-    background: var(--aseg-blue) !important;
+    background: var(--orange) !important;
     color: #FFFFFF !important;
 }
 
 button[data-baseweb="tab"] {
-    color: var(--aseg-charcoal) !important;
+    color: var(--charcoal) !important;
     font-weight: 700 !important;
 }
 
 button[data-baseweb="tab"][aria-selected="true"] {
-    color: var(--aseg-orange) !important;
+    color: var(--orange) !important;
 }
 
-hr {
-    border-color: var(--aseg-gray) !important;
-    opacity: 0.75 !important;
+/* Barra de progreso: idéntica al extractor. */
+div[data-testid="stProgress"] div[role="progressbar"],
+div[data-testid="stProgress"] div[data-baseweb="progress-bar"] > div {
+    background-color: var(--progress-track) !important;
 }
 
-/* Barra de progreso institucional. */
-[data-testid="stProgress"] div[role="progressbar"] > div,
-[data-testid="stProgress"] div[data-baseweb="progress-bar"] > div > div {
-    background: var(--aseg-blue) !important;
+div[data-testid="stProgress"] div[role="progressbar"] > div,
+div[data-testid="stProgress"] div[data-baseweb="progress-bar"] > div > div {
+    background-color: var(--progress-blue) !important;
 }
 
-/* Mensajes semánticos basados en la paleta Bootstrap 5. */
-.app-alert {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0.8rem 1rem;
-    margin: 0.75rem 0;
-    border: 1px solid transparent;
-    border-radius: 10px;
-    font-size: 0.92rem;
-    line-height: 1.4;
+/* Alertas nativas: conservar legibilidad independientemente del tema del navegador. */
+[data-testid="stAlert"] {
+    border-radius: 10px !important;
 }
 
-.app-alert__icon {
-    flex: 0 0 auto;
-    display: inline-grid;
-    place-items: center;
-    width: 1.45rem;
-    height: 1.45rem;
-    border-radius: 50%;
-    font-weight: 900;
-}
-
-.app-alert--success {
-    color: #0F5132;
-    background: #D1E7DD;
-    border-color: #BADBCC;
-}
-
-.app-alert--info {
-    color: #055160;
-    background: #CFF4FC;
-    border-color: #B6EFFB;
-}
-
-.app-alert--warning {
-    color: #664D03;
-    background: #FFF3CD;
-    border-color: #FFECB5;
-}
-
-.app-alert--danger {
-    color: #842029;
-    background: #F8D7DA;
-    border-color: #F5C2C7;
-}
-
-.app-alert--success .app-alert__icon { background: #BADBCC; }
-.app-alert--info .app-alert__icon { background: #B6EFFB; }
-.app-alert--warning .app-alert__icon { background: #FFECB5; }
-.app-alert--danger .app-alert__icon { background: #F5C2C7; }
-
-/* Se conserva sin cambios el diseño de títulos asociado a tablas de salida. */
+/* Diseño existente de las tablas de salida: NO MODIFICAR. */
 .report-title {
     padding: 1px 20px;
     margin: 10px 0 15px;
@@ -385,13 +319,13 @@ hr {
     text-transform: uppercase;
 }
 
-/* Login: se preserva su diseño y su flujo actual. */
+/* Login: se conserva exactamente como estaba configurado. */
 .login-shell {
     max-width: 650px;
     margin: 9vh auto 0 auto;
     background: #FFFFFF;
-    border: 1px solid #E7DED9;
-    border-top: 6px solid #FF5E12;
+    border: 1px solid var(--border);
+    border-top: 6px solid var(--orange);
     border-radius: 18px;
     padding: 2rem;
     text-align: center;
@@ -399,20 +333,17 @@ hr {
 }
 
 .login-shell h1 {
-    color: #00304F;
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    margin: 0 0 1.1rem 0;
-    font-weight: 800;
+    color: var(--blue) !important;
+    margin-bottom: 0.4rem;
 }
 
 .login-shell p {
-    color: #362D32;
-    margin: 0.35rem 0;
+    color: var(--charcoal) !important;
 }
 
 .login-shell .muted-note {
-    color: #756B70;
-    font-size: 0.95rem;
+    color: #756B70 !important;
+    font-size: 0.86rem;
 }
 
 @media (max-width: 900px) {
@@ -420,13 +351,13 @@ hr {
         padding-left: 1rem !important;
         padding-right: 1rem !important;
     }
-
-    .page-hero {
-        padding: 1rem 1.1rem;
-    }
 }
 
 @media (max-width: 700px) {
+    .institutional-header {
+        padding: 1.1rem;
+    }
+
     .login-shell {
         margin-top: 4vh;
         padding: 1.5rem 1.1rem;
