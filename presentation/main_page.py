@@ -82,8 +82,13 @@ def _process_selection(selection, file_index) -> None:
         st.info(f"ℹ️ Documentos omitidos por resultado vigente: {skipped}.")
 
 
+def _logout() -> None:
+    clear_active_work()
+    st.logout()
+
+
 def render_main_page(active_work: Work) -> None:
-    header_left, header_right = st.columns([6, 1])
+    header_left, change_work_col, logout_col = st.columns([5, 1, 1])
     with header_left:
         st.markdown("### Análisis documental de ejecución")
         st.caption(
@@ -94,10 +99,18 @@ def render_main_page(active_work: Work) -> None:
                 else ""
             )
         )
-    with header_right:
+
+    with change_work_col:
         if st.button("Cambiar obra", use_container_width=True):
             clear_active_work()
             st.rerun()
+
+    with logout_col:
+        st.button(
+            "Cerrar sesión",
+            on_click=_logout,
+            use_container_width=True,
+        )
 
     files_by_category = render_sidebar()
     labels, file_index = _build_file_index(files_by_category)
