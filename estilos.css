@@ -1,45 +1,37 @@
+/* El header nativo de Streamlit deja de controlar la identidad visual. */
 [data-testid="stHeader"] {
-    background-color: #00304F !important;
-    border-bottom: 5px solid #FF5E12 !important;
-    min-height: 4.5rem !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    min-height: 0 !important;
+    height: 0 !important;
 }
 
 [data-testid="stHeader"]::after {
-    content: "🏗️ ASEG | Análisis de Ejecución";
-    color: #FFF;
-    font-size: 1.5rem;
-    font-weight: 700;
-    font-family: sans-serif;
-    position: absolute;
-    left: 4.8rem;
-    top: 50%;
-    transform: translateY(-50%);
+    content: none !important;
+    display: none !important;
 }
 
-/* Botón para volver a abrir la barra lateral.
-   Se cubren los selectores usados por distintas versiones de Streamlit. */
+/* Conserva accesible el control para volver a abrir el sidebar aunque el header
+   nativo ya no sea visible. */
 [data-testid="collapsedControl"],
-[data-testid="stExpandSidebarButton"],
-[data-testid="stHeader"] button[kind="header"] {
-    color: #FFF !important;
+[data-testid="stExpandSidebarButton"] {
+    position: fixed !important;
+    top: 1.1rem !important;
+    left: 0.9rem !important;
+    z-index: 10001 !important;
+    color: #FFFFFF !important;
 }
 
 [data-testid="collapsedControl"] svg,
 [data-testid="stExpandSidebarButton"] svg,
-[data-testid="stHeader"] button[kind="header"] svg {
-    color: #FFF !important;
-    fill: #FFF !important;
-    stroke: #FFF !important;
+[data-testid="collapsedControl"] svg *,
+[data-testid="stExpandSidebarButton"] svg * {
+    color: #FFFFFF !important;
+    fill: #FFFFFF !important;
+    stroke: #FFFFFF !important;
     width: 24px !important;
     height: 24px !important;
-}
-
-[data-testid="collapsedControl"] svg *,
-[data-testid="stExpandSidebarButton"] svg *,
-[data-testid="stHeader"] button[kind="header"] svg * {
-    color: #FFF !important;
-    fill: #FFF !important;
-    stroke: #FFF !important;
 }
 
 [data-testid="stSidebarCollapseButton"] svg {
@@ -53,7 +45,34 @@
 }
 
 .block-container {
-    padding-top: 5.5rem !important;
+    padding-top: 1rem !important;
+}
+
+/* Encabezado institucional propio de la aplicación. */
+.app-header {
+    width: calc(100% + 6rem);
+    min-height: 4.5rem;
+    margin: -1rem -3rem 2rem -3rem;
+    padding: 0 3rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    background: #00304F;
+    border-bottom: 5px solid #FF5E12;
+}
+
+.app-header__content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.app-header__brand {
+    color: #FFFFFF;
+    font-family: sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
 .stDownloadButton button,
@@ -96,7 +115,6 @@
     padding: 10px !important;
 }
 
-/* Hover azul claro solicitado para las carpetas/configuración del sidebar. */
 [data-testid="stSidebar"] [data-testid="stExpander"] summary:hover {
     background: #E8F2FF !important;
     color: #00304F !important;
@@ -155,6 +173,16 @@
 }
 
 @media (max-width: 700px) {
+    .app-header {
+        width: calc(100% + 2rem);
+        margin: -1rem -1rem 1.5rem -1rem;
+        padding: 0 1rem 0 3.5rem;
+    }
+
+    .app-header__brand {
+        font-size: 1.15rem;
+    }
+
     .login-shell {
         margin-top: 4vh;
         padding: 1.5rem 1.1rem;
