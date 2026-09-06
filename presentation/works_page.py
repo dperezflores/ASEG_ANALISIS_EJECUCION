@@ -12,35 +12,60 @@ def _work_label(work: Work) -> str:
     return work.name
 
 
+def _open_work(work: Work) -> None:
+    st.session_state.active_work_id = str(work.id)
+    st.session_state.active_work_name = work.name
+    st.session_state.historial = {
+        categoria: [] for categoria in st.session_state.historial
+    }
+    st.session_state.procesados = set()
+
+
+def _archive_work(work: Work, user: User, service: WorkService) -> None:
+    service.archive(work.id, user.id)
+
+
+def _restore_work(work: Work, user: User, service: WorkService) -> None:
+    service.restore(work.id, user.id)
+
+
+def _show_delete_confirmation(work: Work) -> None:
+    st.session_state[f"confirm_delete_{work.id}"] = True
+
+
+def _confirm_delete(work: Work, user: User, service: WorkService) -> None:
+    service.delete(work.id, user.id)
+    st.session_state.pop(f"confirm_delete_{work.id}", None)
+
+
+def _cancel_delete(work: Work) -> None:
+    st.session_state.pop(f"confirm_delete_{work.id}", None)
+
+
 def _render_work_row(work: Work, user: User, service: WorkService) -> None:
     name_col, open_col, archive_col = st.columns([8, 1.2, 1.4], vertical_alignment="center")
 
     with name_col:
         st.markdown(f"**{work.name}**")
 
-    if open_col.button(
+    open_col.button(
         "Abrir",
         key=f"open_work_{work.id}",
         type="primary",
         use_container_width=True,
-    ):
-        st.session_state.active_work_id = str(work.id)
-        st.session_state.active_work_name = work.name
-        st.session_state.historial = {
-            categoria: [] for categoria in st.session_state.historial
-        }
-        st.session_state.procesados = set()
-        st.rerun()
+        on_click=_open_work,
+        args=(work,),
+    )
 
     with archive_col:
         with st.container(key=f"archive_action_{work.id}"):
-            if st.button(
+            st.button(
                 "Archivar",
                 key=f"archive_work_{work.id}",
                 use_container_width=True,
-            ):
-                service.archive(work.id, user.id)
-                st.rerun()
+                on_click=_archive_work,
+                args=(work, user, service),
+            )
 
     st.divider()
 
@@ -61,7 +86,6 @@ def _render_create_form(user: User, service: WorkService) -> None:
                     NewWork(name=identifier),
                 )
                 st.success("Obra registrada correctamente.")
-                st.rerun()
             except ValueError as exc:
                 st.error(str(exc))
 
@@ -76,31 +100,37 @@ def _render_archived(user: User, service: WorkService) -> None:
             cols = st.columns([5, 1, 1])
             cols[0].write(_work_label(work))
 
-            if cols[1].button("Restaurar", key=f"restore_work_{work.id}"):
-                service.restore(work.id, user.id)
-                st.rerun()
+            cols[1].button(
+                "Restaurar",
+                key=f"restore_work_{work.id}",
+                on_click=_restore_work,
+                args=(work, user, service),
+            )
 
-            if cols[2].button("Eliminar", key=f"delete_work_{work.id}"):
-                st.session_state[f"confirm_delete_{work.id}"] = True
+            cols[2].button(
+                "Eliminar",
+                key=f"delete_work_{work.id}",
+                on_click=_show_delete_confirmation,
+                args=(work,),
+            )
 
             if st.session_state.get(f"confirm_delete_{work.id}"):
                 st.warning(f"Esta acción eliminará permanentemente: {work.name}")
                 confirm, cancel = st.columns(2)
 
-                if confirm.button(
+                confirm.button(
                     "Confirmar eliminación",
                     key=f"confirm_delete_btn_{work.id}",
-                ):
-                    service.delete(work.id, user.id)
-                    st.session_state.pop(f"confirm_delete_{work.id}", None)
-                    st.rerun()
+                    on_click=_confirm_delete,
+                    args=(work, user, service),
+                )
 
-                if cancel.button(
+                cancel.button(
                     "Cancelar",
                     key=f"cancel_delete_btn_{work.id}",
-                ):
-                    st.session_state.pop(f"confirm_delete_{work.id}", None)
-                    st.rerun()
+                    on_click=_cancel_delete,
+                    args=(work,),
+                )
 
 
 def render_works_page(user: User, service: WorkService) -> None:
