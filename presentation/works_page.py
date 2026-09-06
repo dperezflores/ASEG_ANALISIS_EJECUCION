@@ -12,32 +12,35 @@ def _work_label(work: Work) -> str:
     return work.name
 
 
-def _render_work_card(work: Work, user: User, service: WorkService) -> None:
-    with st.container(border=True):
+def _render_work_row(work: Work, user: User, service: WorkService) -> None:
+    name_col, open_col, archive_col = st.columns([8, 1.2, 1.4], vertical_alignment="center")
+
+    with name_col:
         st.markdown(f"**{work.name}**")
 
-        col_open, col_archive = st.columns([1, 1])
-        if col_open.button(
-            "Abrir",
-            key=f"open_work_{work.id}",
-            type="primary",
-            use_container_width=True,
-        ):
-            st.session_state.active_work_id = str(work.id)
-            st.session_state.active_work_name = work.name
-            st.session_state.historial = {
-                categoria: [] for categoria in st.session_state.historial
-            }
-            st.session_state.procesados = set()
-            st.rerun()
+    if open_col.button(
+        "Abrir",
+        key=f"open_work_{work.id}",
+        type="primary",
+        use_container_width=True,
+    ):
+        st.session_state.active_work_id = str(work.id)
+        st.session_state.active_work_name = work.name
+        st.session_state.historial = {
+            categoria: [] for categoria in st.session_state.historial
+        }
+        st.session_state.procesados = set()
+        st.rerun()
 
-        if col_archive.button(
-            "Archivar",
-            key=f"archive_work_{work.id}",
-            use_container_width=True,
-        ):
-            service.archive(work.id, user.id)
-            st.rerun()
+    if archive_col.button(
+        "Archivar",
+        key=f"archive_work_{work.id}",
+        use_container_width=True,
+    ):
+        service.archive(work.id, user.id)
+        st.rerun()
+
+    st.divider()
 
 
 def _render_create_form(user: User, service: WorkService) -> None:
@@ -123,6 +126,6 @@ def render_works_page(user: User, service: WorkService) -> None:
             "Seleccione una obra para abrir su espacio de análisis documental.",
         )
         for work in works:
-            _render_work_card(work, user, service)
+            _render_work_row(work, user, service)
 
     _render_archived(user, service)
