@@ -55,6 +55,7 @@ def render_results() -> None:
                 data=report["xls"],
                 file_name=f"Reporte_{name}.xlsx",
                 key=f"descarga_{name}",
+                on_click="ignore",
             )
 
             if name == CategoriaDocumento.POLIZAS:
