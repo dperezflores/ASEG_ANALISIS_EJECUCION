@@ -57,15 +57,9 @@
     box-shadow: none !important;
 }
 
-/* Control para cerrar el sidebar: sólo en hover cambia a blanco.
-   Streamlit puede representar el icono como SVG o como icono tipográfico/material,
-   por eso se aplica el color al botón y a todos sus descendientes. */
+/* Control para cerrar el sidebar: sólo en hover cambia a blanco. */
 [data-testid="stSidebarCollapseButton"] button:hover,
-[data-testid="stSidebarCollapseButton"]:hover button {
-    color: #FFFFFF !important;
-    -webkit-text-fill-color: #FFFFFF !important;
-}
-
+[data-testid="stSidebarCollapseButton"]:hover button,
 [data-testid="stSidebarCollapseButton"] button:hover *,
 [data-testid="stSidebarCollapseButton"]:hover button *,
 [data-testid="stSidebarCollapseButton"]:hover span,
@@ -81,6 +75,38 @@
     color: #FFFFFF !important;
     fill: #FFFFFF !important;
     stroke: #FFFFFF !important;
+}
+
+/* Acción Archivar: gris institucional de la paleta ASEG. */
+[class*="st-key-archive_action_"] .stButton > button,
+[class*="st-key-archive_action_"] .stButton > button * {
+    background: #D6D6D6 !important;
+    color: #362D32 !important;
+    -webkit-text-fill-color: #362D32 !important;
+    border: none !important;
+}
+
+[class*="st-key-archive_action_"] .stButton > button:hover,
+[class*="st-key-archive_action_"] .stButton > button:hover * {
+    background: #BFC0C0 !important;
+    color: #362D32 !important;
+    -webkit-text-fill-color: #362D32 !important;
+}
+
+/* Cerrar sesión: rojo tipo Bootstrap danger. */
+.st-key-logout_action .stButton > button,
+.st-key-logout_action .stButton > button * {
+    background: #DC3545 !important;
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+    border: none !important;
+}
+
+.st-key-logout_action .stButton > button:hover,
+.st-key-logout_action .stButton > button:hover * {
+    background: #BB2D3B !important;
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
 }
 
 /* El header técnico conserva altura suficiente para los controles nativos. */
