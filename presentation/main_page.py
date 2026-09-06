@@ -112,6 +112,7 @@ def render_main_page(active_work: Work) -> None:
         st.write("")
         st.button(
             "Cerrar sesión",
+            key="logout_action",
             on_click=_logout,
             use_container_width=True,
         )
