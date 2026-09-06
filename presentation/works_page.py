@@ -32,13 +32,15 @@ def _render_work_row(work: Work, user: User, service: WorkService) -> None:
         st.session_state.procesados = set()
         st.rerun()
 
-    if archive_col.button(
-        "Archivar",
-        key=f"archive_work_{work.id}",
-        use_container_width=True,
-    ):
-        service.archive(work.id, user.id)
-        st.rerun()
+    with archive_col:
+        with st.container(key=f"archive_action_{work.id}"):
+            if st.button(
+                "Archivar",
+                key=f"archive_work_{work.id}",
+                use_container_width=True,
+            ):
+                service.archive(work.id, user.id)
+                st.rerun()
 
     st.divider()
 
@@ -113,7 +115,8 @@ def render_works_page(user: User, service: WorkService) -> None:
     with logout_col:
         st.write("")
         st.write("")
-        st.button("Cerrar sesión", on_click=st.logout, use_container_width=True)
+        with st.container(key="logout_action"):
+            st.button("Cerrar sesión", on_click=st.logout, use_container_width=True)
 
     _render_create_form(user, service)
 
