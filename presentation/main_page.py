@@ -13,6 +13,13 @@ from presentation.results import render_results
 from presentation.sidebar import render_sidebar
 
 
+def _files_by_category_from_state() -> dict[str, list]:
+    return {
+        categoria: list(st.session_state.get(f"up_{categoria}", []) or [])
+        for categoria in CATEGORIAS
+    }
+
+
 def _build_file_index(files_by_category: dict[str, list]):
     labels: list[str] = []
     index: dict[str, tuple[str, object]] = {}
@@ -88,6 +95,30 @@ def _logout() -> None:
     st.logout()
 
 
+@st.fragment(key="analysis_workspace")
+def _render_analysis_workspace() -> None:
+    files_by_category = _files_by_category_from_state()
+    labels, file_index = _build_file_index(files_by_category)
+
+    if labels:
+        render_section_heading(
+            "Centro de análisis",
+            "Seleccione los documentos cargados que desea procesar con IA.",
+        )
+        selection = st.multiselect(
+            "Seleccione los archivos a analizar:",
+            labels,
+            key="analysis_selection",
+        )
+        if st.button("🚀 Procesar selección", type="primary"):
+            _process_selection(selection, file_index)
+    else:
+        st.warning("No hay documentos cargados en las carpetas de ejecución.")
+
+    st.markdown("---")
+    render_results()
+
+
 def render_main_page(active_work: Work) -> None:
     title_col, change_work_col, logout_col = st.columns([5, 1, 1])
 
@@ -103,9 +134,11 @@ def render_main_page(active_work: Work) -> None:
     with change_work_col:
         st.write("")
         st.write("")
-        if st.button("Cambiar obra", use_container_width=True):
-            clear_active_work()
-            st.rerun()
+        st.button(
+            "Cambiar obra",
+            on_click=clear_active_work,
+            use_container_width=True,
+        )
 
     with logout_col:
         st.write("")
@@ -117,22 +150,5 @@ def render_main_page(active_work: Work) -> None:
             use_container_width=True,
         )
 
-    files_by_category = render_sidebar()
-    labels, file_index = _build_file_index(files_by_category)
-
-    if labels:
-        render_section_heading(
-            "Centro de análisis",
-            "Seleccione los documentos cargados que desea procesar con IA.",
-        )
-        selection = st.multiselect(
-            "Seleccione los archivos a analizar:",
-            labels,
-        )
-        if st.button("🚀 Procesar selección", type="primary"):
-            _process_selection(selection, file_index)
-    else:
-        st.warning("No hay documentos cargados en las carpetas de ejecución.")
-
-    st.markdown("---")
-    render_results()
+    render_sidebar()
+    _render_analysis_workspace()
