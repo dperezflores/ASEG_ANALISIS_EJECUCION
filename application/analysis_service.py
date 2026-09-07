@@ -25,12 +25,17 @@ class AnalysisService:
     def fingerprint(file) -> str:
         return hashlib.sha256(file.getvalue()).hexdigest()
 
-    def processing_key(self, categoria: str, file) -> str:
+    def processing_key(
+        self,
+        categoria: str,
+        file,
+        file_hash: str | None = None,
+    ) -> str:
         provider = self.analyzer.provider
         prompt_signature = self.analyzer.prompt_signature(categoria)
         return (
             f"{categoria}:"
-            f"{self.fingerprint(file)}:"
+            f"{file_hash or self.fingerprint(file)}:"
             f"{provider.provider_name}:"
             f"{provider.model_name}:"
             f"{provider.prompt_version}:"
@@ -41,7 +46,11 @@ class AnalysisService:
         if self.repository is None or self.work_id is None:
             return None
 
-        cached = self.repository.get_by_processing_key(self.work_id, key)
+        try:
+            cached = self.repository.get_by_processing_key(self.work_id, key)
+        except Exception:
+            return None
+
         if not cached:
             return None
 
@@ -63,7 +72,8 @@ class AnalysisService:
         if categoria not in CATEGORIAS:
             raise ValueError(f"Categoría no soportada: {categoria}")
 
-        key = self.processing_key(categoria, file)
+        file_hash = self.fingerprint(file)
+        key = self.processing_key(categoria, file, file_hash)
         if is_processed(key):
             return None, True
 
@@ -82,18 +92,21 @@ class AnalysisService:
 
             if self.repository is not None and self.work_id is not None:
                 provider = self.analyzer.provider
-                self.repository.save(
-                    work_id=self.work_id,
-                    categoria=categoria,
-                    archivo_hash=self.fingerprint(file),
-                    archivo_nombre=file.name,
-                    proveedor=provider.provider_name,
-                    modelo=provider.model_name,
-                    version_prompt=provider.prompt_version,
-                    firma_prompt=self.analyzer.prompt_signature(categoria),
-                    processing_key=key,
-                    datos=result.datos,
-                    metadatos=result.metadatos,
-                )
+                try:
+                    self.repository.save(
+                        work_id=self.work_id,
+                        categoria=categoria,
+                        archivo_hash=file_hash,
+                        archivo_nombre=file.name,
+                        proveedor=provider.provider_name,
+                        modelo=provider.model_name,
+                        version_prompt=provider.prompt_version,
+                        firma_prompt=self.analyzer.prompt_signature(categoria),
+                        processing_key=key,
+                        datos=result.datos,
+                        metadatos=result.metadatos,
+                    )
+                except Exception:
+                    pass
 
         return result, False
