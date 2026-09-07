@@ -109,6 +109,26 @@
     -webkit-text-fill-color: #FFFFFF !important;
 }
 
+/* Eliminación de análisis: acción destructiva claramente diferenciada. */
+[class*="st-key-delete_analysis_"] .stButton > button,
+[class*="st-key-delete_analysis_"] .stButton > button *,
+[class*="st-key-confirm_delete_analysis_"] .stButton > button,
+[class*="st-key-confirm_delete_analysis_"] .stButton > button * {
+    background: #DC3545 !important;
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+    border: none !important;
+}
+
+[class*="st-key-delete_analysis_"] .stButton > button:hover,
+[class*="st-key-delete_analysis_"] .stButton > button:hover *,
+[class*="st-key-confirm_delete_analysis_"] .stButton > button:hover,
+[class*="st-key-confirm_delete_analysis_"] .stButton > button:hover * {
+    background: #BB2D3B !important;
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
 /* El header técnico conserva altura suficiente para los controles nativos. */
 [data-testid="stHeader"] {
     height: 3rem !important;
