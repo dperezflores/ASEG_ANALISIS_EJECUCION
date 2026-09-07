@@ -20,6 +20,7 @@ def initialize_session() -> None:
     st.session_state.setdefault("current_user", None)
     st.session_state.setdefault("active_work_id", None)
     st.session_state.setdefault("active_work_name", None)
+    st.session_state.setdefault("hydrated_work_id", None)
 
 
 def get_history(categoria: str) -> list[dict]:
@@ -38,11 +39,25 @@ def mark_processed(key: str) -> None:
     st.session_state.procesados.add(key)
 
 
+def restore_persisted_history(
+    work_id: str,
+    history_by_category: dict[str, list[dict]],
+    processed_keys: set[str],
+) -> None:
+    st.session_state.historial = {
+        categoria: list(history_by_category.get(categoria, []))
+        for categoria in CATEGORIAS
+    }
+    st.session_state.procesados = set(processed_keys)
+    st.session_state.hydrated_work_id = work_id
+
+
 def clear_active_work() -> None:
     st.session_state.active_work_id = None
     st.session_state.active_work_name = None
     st.session_state.historial = {categoria: [] for categoria in CATEGORIAS}
     st.session_state.procesados = set()
+    st.session_state.hydrated_work_id = None
 
     for key in list(st.session_state.keys()):
         if key.startswith("up_") or key.startswith("confirm_delete_"):
