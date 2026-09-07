@@ -19,6 +19,7 @@ def _open_work(work: Work) -> None:
         categoria: [] for categoria in st.session_state.historial
     }
     st.session_state.procesados = set()
+    st.session_state.hydrated_work_id = None
 
 
 def _archive_work(work: Work, user: User, service: WorkService) -> None:
