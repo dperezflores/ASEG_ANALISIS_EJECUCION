@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from uuid import UUID
 
 import streamlit as st
 
@@ -33,7 +34,7 @@ def _build_file_index(files_by_category: dict[str, list]):
     return labels, index
 
 
-def _process_selection(selection, file_index) -> None:
+def _process_selection(selection, file_index, work_id: UUID) -> None:
     if not selection:
         st.warning("Seleccione al menos un archivo.")
         return
@@ -45,6 +46,7 @@ def _process_selection(selection, file_index) -> None:
     service = build_analysis_service(
         st.session_state.api_key,
         st.session_state.modelo,
+        work_id,
     )
 
     grouped = defaultdict(list)
@@ -96,7 +98,7 @@ def _logout() -> None:
 
 
 @st.fragment(key="analysis_workspace")
-def _render_analysis_workspace() -> None:
+def _render_analysis_workspace(work_id: UUID) -> None:
     files_by_category = _files_by_category_from_state()
     labels, file_index = _build_file_index(files_by_category)
 
@@ -111,7 +113,7 @@ def _render_analysis_workspace() -> None:
             key="analysis_selection",
         )
         if st.button("🚀 Procesar selección", type="primary"):
-            _process_selection(selection, file_index)
+            _process_selection(selection, file_index, work_id)
     else:
         st.warning("No hay documentos cargados en las carpetas de ejecución.")
 
@@ -151,4 +153,4 @@ def render_main_page(active_work: Work) -> None:
         )
 
     render_sidebar()
-    _render_analysis_workspace()
+    _render_analysis_workspace(active_work.id)
