@@ -6,6 +6,7 @@ from application.session import get_history
 from domain.categories import CATEGORIAS, CategoriaDocumento
 from presentation.table_component import render_report_table
 from reports import excel as report_builder
+from reports.solicitudes_pago import reporte_solicitudes_pago
 
 
 def build_reports() -> dict[str, dict]:
@@ -22,6 +23,10 @@ def build_reports() -> dict[str, dict]:
 
         elif categoria == CategoriaDocumento.FACTURAS:
             df, xls = report_builder.reporte_facturas(data)
+            reports[categoria] = {"df": df, "xls": xls}
+
+        elif categoria == CategoriaDocumento.SOLICITUDES_PAGO:
+            df, xls = reporte_solicitudes_pago(data)
             reports[categoria] = {"df": df, "xls": xls}
 
         elif categoria == CategoriaDocumento.COMPROBANTES:
