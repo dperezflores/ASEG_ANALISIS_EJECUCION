@@ -86,3 +86,20 @@ class NeonAnalysisRepository:
                 cursor.execute(sql, (work_id,))
                 rows = cursor.fetchall()
         return [dict(row) for row in rows]
+
+    def delete_file_analysis(
+        self,
+        work_id: UUID,
+        categoria: str,
+        archivo_hash: str,
+    ) -> int:
+        sql = """
+            DELETE FROM resultados_analisis
+            WHERE obra_id = %s AND categoria = %s AND archivo_hash = %s
+        """
+        with self._database.connection() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(sql, (work_id, categoria, archivo_hash))
+                deleted = cursor.rowcount
+            connection.commit()
+        return deleted
