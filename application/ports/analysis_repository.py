@@ -27,3 +27,11 @@ class AnalysisRepository(Protocol):
 
     def list_latest_for_work(self, work_id: UUID) -> list[dict]:
         ...
+
+    def delete_file_analysis(
+        self,
+        work_id: UUID,
+        categoria: str,
+        archivo_hash: str,
+    ) -> int:
+        ...
