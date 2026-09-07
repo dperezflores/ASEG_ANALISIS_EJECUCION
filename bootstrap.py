@@ -5,7 +5,11 @@ from uuid import UUID
 import streamlit as st
 
 from application.session import clear_active_work, initialize_session
-from composition import build_auth_service, build_work_service
+from composition import (
+    build_analysis_history_service,
+    build_auth_service,
+    build_work_service,
+)
 from config.settings import get_secret, get_settings
 from infrastructure.auth.streamlit_oidc import identity_from_streamlit_user
 from presentation.login_page import render_login_page
@@ -88,5 +92,15 @@ def run() -> None:
     if active_work is None:
         render_works_page(user, work_service)
         return
+
+    if st.session_state.hydrated_work_id != str(active_work.id):
+        try:
+            build_analysis_history_service().restore_work(active_work.id)
+        except Exception as exc:
+            st.warning(
+                "No fue posible recuperar el historial persistido de análisis. "
+                f"La obra puede seguir utilizándose normalmente. Detalle: {exc}"
+            )
+            st.session_state.hydrated_work_id = str(active_work.id)
 
     render_main_page(active_work)
