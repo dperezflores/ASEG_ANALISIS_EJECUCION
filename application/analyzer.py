@@ -9,6 +9,7 @@ from domain.schemas import (
     ListaEstimaciones,
     ListaFacturas,
     ListaPolizas,
+    ListaSolicitudesPago,
     ResultadoExtraccion,
 )
 
@@ -16,6 +17,7 @@ from domain.schemas import (
 PROMPT_POR_CATEGORIA = {
     "Estimaciones": "estimaciones",
     "Facturas": "facturas",
+    "Solicitudes de Pago": "solicitudes_pago",
     "Comprobantes de Pago": "comprobantes_pago",
     "Pólizas": "polizas",
 }
@@ -23,6 +25,7 @@ PROMPT_POR_CATEGORIA = {
 ESQUEMA_POR_CATEGORIA = {
     "Estimaciones": ListaEstimaciones,
     "Facturas": ListaFacturas,
+    "Solicitudes de Pago": ListaSolicitudesPago,
     "Comprobantes de Pago": ListaComprobantes,
     "Pólizas": ListaPolizas,
 }
