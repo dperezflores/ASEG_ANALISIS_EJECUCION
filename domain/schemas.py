@@ -40,6 +40,15 @@ class ListaFacturas(RootModel[list[Factura]]):
     pass
 
 
+class SolicitudPago(ModeloASEG):
+    numero_solicitud: str = Field(alias="Número de solicitud")
+    fecha_solicitud: str = Field(alias="Fecha de solicitud")
+
+
+class ListaSolicitudesPago(RootModel[list[SolicitudPago]]):
+    pass
+
+
 class ComprobantePago(ModeloASEG):
     numero: str = Field(alias="Número")
     fecha_pago: str = Field(alias="Fecha de pago")
