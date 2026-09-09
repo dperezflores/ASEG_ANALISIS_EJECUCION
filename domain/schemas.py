@@ -43,6 +43,7 @@ class ListaFacturas(RootModel[list[Factura]]):
 class SolicitudPago(ModeloASEG):
     numero_solicitud: str = Field(alias="Número de solicitud")
     fecha_solicitud: str = Field(alias="Fecha de solicitud")
+    estimacion: str = Field(alias="Estimación", default="NO INDICA")
 
 
 class ListaSolicitudesPago(RootModel[list[SolicitudPago]]):
