@@ -49,6 +49,11 @@ DEVENGO EN FORMATO TIPO LEÓN / "COMBINACIÓN":
 - Identifica el renglón que representa el reconocimiento contable del costo o devengo de la obra.
 - Cuando exista una cadena "Combinación", reporta como "Cuenta contable" solamente el segmento de la posición 2, no toda la cadena completa.
 - No apliques la regla de terminación "00" o "09" si la estructura del documento no corresponde a SAP.
+- Si un mismo devengo aparece desglosado en dos o más líneas contables que corresponden al mismo asiento, misma cuenta contable principal, mismo fondo, misma fecha y mismo movimiento económico, y dichas líneas representan componentes del mismo importe —por ejemplo importe base e IVA—, NO generes registros separados.
+- En ese caso, consolida las líneas en un solo registro y utiliza como "Importe" el total del devengo con IVA.
+- Verifica, cuando el documento lo permita, que la suma de los componentes coincida con el pasivo a contratistas, total relacionado o importe global del mismo movimiento.
+- Ejemplo: importe base 21,461.29 + IVA 3,433.81 = importe devengado 24,895.10; devuelve un solo registro con "Importe" = 24,895.10.
+- No consolides líneas cuando correspondan a fondos distintos, cuentas contables distintas, estimaciones distintas o movimientos económicos diferentes.
 
 MÚLTIPLES FONDOS:
 - Una misma estimación puede estar financiada con varios fondos.
@@ -112,6 +117,7 @@ IMPORTE:
 - Verifica que cada registro corresponda a una sola póliza y a un solo movimiento.
 - En formato SAP, evita duplicar el mismo movimiento entre cuentas 09 y 00.
 - En formato tipo León, verifica que la cuenta contable provenga de la posición 2 de la "Combinación" y el fondo de la posición 11.
+- En formato tipo León, cuando un mismo devengo esté desglosado en importe base e IVA u otros componentes del mismo movimiento, verifica que se haya consolidado en un solo registro con el importe total correspondiente.
 - En PAGO, verifica que el importe provenga efectivamente de la salida bancaria correspondiente.
 - Verifica que la fuente de financiamiento respete primero el texto explícito del documento y después, como dato complementario, el fondo identificado.
 - No mezcles datos de distintas pólizas, estimaciones o fuentes de financiamiento.
